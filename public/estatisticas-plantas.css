@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0%;
+}
+
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+
+}
+
+
+.navbar {
+    background-color: #3fb243c2;
+}
+
+
+
+.statistics-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1;
+    min-width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+}
+
+#especies-chart, #areas-chart {
+    margin-top: 20px;
+}
+
+.btn-group{
+    display: flex;
+    gap: 1%;
+    padding: 2%;
+}
+
+.collapse:not(.show) {
+    display: block; /* Garante que o colapso não afete o layout */
+    height: 0;
+    overflow: hidden;
+}
+
+.collapse.show {
+    display: block;
+}

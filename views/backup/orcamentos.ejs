@@ -1,0 +1,48 @@
+<!-- views/orcamentos.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Criar Orçamento</title>
+</head>
+<body>
+    <h1>Criar Orçamento</h1>
+    <form action="/orcamentos" method="POST">
+        <label for="obra">Obra:</label>
+        <select name="obra" id="obra">
+            <% obrasAbertas.forEach(obra => { %>
+                <option value="<%= obra._id %>"><%= obra.nome %></option>
+            <% }) %>
+        </select>
+        <div id="itens-container">
+            <div class="item">
+                <label>Quantidade:</label>
+                <input type="number" name="itens[0].quantidade" required>
+                <label>Altura:</label>
+                <input type="text" name="itens[0].altura" required>
+                <label>Valor:</label>
+                <input type="number" name="itens[0].valor" step="0.01" required>
+            </div>
+        </div>
+        <button type="button" onclick="addItem()">Adicionar Item</button>
+        <button type="submit">Salvar Orçamento</button>
+    </form>
+    <script>
+        let itemCount = 1;
+        function addItem() {
+            const container = document.getElementById('itens-container');
+            const newItem = document.createElement('div');
+            newItem.className = 'item';
+            newItem.innerHTML = `
+                <label>Quantidade:</label>
+                <input type="number" name="itens[${itemCount}].quantidade" required>
+                <label>Altura:</label>
+                <input type="text" name="itens[${itemCount}].altura" required>
+                <label>Valor:</label>
+                <input type="number" name="itens[${itemCount}].valor" step="0.01" required>
+            `;
+            container.appendChild(newItem);
+            itemCount++;
+        }
+    </script>
+</body>
+</html>

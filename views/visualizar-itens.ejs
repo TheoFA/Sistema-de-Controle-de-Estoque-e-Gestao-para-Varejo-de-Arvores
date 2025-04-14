@@ -1,0 +1,75 @@
+<!-- visualizar-itens.ejs -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Itens</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Visualizar Itens</h1>
+
+    <h2>Itens Agrupados por Local, Ordenados por Espécie e Altura Decrescente</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Local</th>
+                <th>Espécie</th>
+                <th>Quantidade</th>
+                <th>Altura</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% itensPorLocal.forEach(function(local) { %>
+                <% local.itens.forEach(function(item) { %>
+                    <tr>
+                        <td><%= local._id %></td>
+                        <td><%= item.especie %></td>
+                        <td><%= item.quantidade %></td>
+                        <td><%= item.altura %></td>
+                        <td>
+                            <form action="/remover" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="<%= item._id %>">
+                                <button type="submit">Remover</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <h2>Itens Agrupados por Espécie, Ordenados por Local e Altura Decrescente</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Espécie</th>
+                <th>Local</th>
+                <th>Quantidade</th>
+                <th>Altura</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% itensPorEspecie.forEach(function(especie) { %>
+                <% especie.itens.forEach(function(item) { %>
+                    <tr>
+                        <td><%= especie._id %></td>
+                        <td><%= item.local %></td>
+                        <td><%= item.quantidade %></td>
+                        <td><%= item.altura %></td>
+                        <td>
+                            <form action="/remover" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="<%= item._id %>">
+                                <button type="submit">Remover</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

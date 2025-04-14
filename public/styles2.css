@@ -1,0 +1,67 @@
+/* styles.css */
+
+/* Estilo para o título principal */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilo para o título da espécie */
+h2 {
+    margin-top: 30px;
+}
+
+/* Estilo para o formulário de filtro */
+form {
+    margin-bottom: 20px;
+}
+
+/* Estilo para a tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+/* Estilo para as células da tabela */
+td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Estilo para o botão "Vender" */
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+/* Estilo para o modal de venda */
+.modal-dialog {
+    max-width: 400px;
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-body {
+    margin-bottom: 20px;
+}
+
+/* Estilo para o botão "Fechar" do modal */
+.btn-close {
+    color: #000;
+}
+
+/* Estilo para o botão de fechar do modal */
+.btn-close:hover {
+    color: #000;
+}

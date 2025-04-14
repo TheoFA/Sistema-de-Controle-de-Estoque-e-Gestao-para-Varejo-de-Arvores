@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/estatisticas-plantas.css">
+    <title>Estatísticas</title>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            drawChart('Clientes por Indicação', 'chart_div1', <%- JSON.stringify(clientes) %>, 'pie');
+            drawChart('Clientes por Cidade', 'chart_div2', <%- JSON.stringify(clientesPorCidade) %>, 'pie');
+            drawChart('Clientes por Tipo de Obra', 'chart_div3', <%- JSON.stringify(clientesPorTipoObra) %>, 'pie');
+            drawChart('Gastos por Tipo', 'chart_div4', <%- JSON.stringify(gastosPorTipo) %>, 'column', 'Valor');
+            drawChart('Gastos por Categoria', 'chart_div5', <%- JSON.stringify(gastosPorCategoria) %>, 'column', 'Valor');
+            drawChart('Gastos por Produto', 'chart_div6', <%- JSON.stringify(gastosPorProduto) %>, 'column', 'Valor');
+            drawChart('Gastos por Data', 'chart_div7', <%- JSON.stringify(gastosPorData) %>, 'column', 'Valor');
+            drawChart('Arvores Por Especie', 'chart_div8', <%- JSON.stringify(arvoresPorEspecie) %>, 'pie');
+            drawChart('Arvores Por Área', 'chart_div9', <%- JSON.stringify(arvoresPorArea) %>, 'pie');
+        }
+
+        function drawChart(title, elementId, data, chartType = 'column', valueLabel = 'Quantidade') {
+            var dataArray = [[title, valueLabel]];
+            data.forEach(item => {
+                dataArray.push([item._id, item.count || item.total]);
+            });
+
+            var googleData = google.visualization.arrayToDataTable(dataArray);
+            var options = {
+                title: title,
+                hAxis: { title: title, titleTextStyle: { color: '#333' } },
+                vAxis: { minValue: 0 }
+            };
+
+            var chart;
+            if (chartType === 'pie') {
+                chart = new google.visualization.PieChart(document.getElementById(elementId));
+            } else {
+                chart = new google.visualization.ColumnChart(document.getElementById(elementId));
+            }
+            
+            chart.draw(googleData, options);
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+    var collapseButtons = document.querySelectorAll('[data-bs-toggle="collapse"]');
+
+    collapseButtons.forEach(function (button) {
+        var target = document.querySelector(button.getAttribute('data-bs-target'));
+
+        target.addEventListener('shown.bs.collapse', function () {
+            button.classList.remove('btn-secondary');
+            button.classList.add('btn-success');
+        });
+
+        target.addEventListener('hidden.bs.collapse', function () {
+            button.classList.remove('btn-success');
+            button.classList.add('btn-secondary');
+        });
+    });
+});
+
+
+        
+    </script>
+</head>
+<body>
+    <!--  BARRA DE NAVEGAÇÃO -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="imagens/palmicon.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                Palmeira Bonita
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                </div>
+        </div>
+    </nav>
+    <!--  FIM DA BARRA DE NAVEGAÇÃO -->
+    <h1>Estatísticas</h1>
+    <div class="accordion" id="accordionExample" >
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#clientesCollapse" aria-expanded="false" aria-controls="clientesCollapse">
+            Estatísticas de Clientes
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#plantasCollapse" aria-expanded="false" aria-controls="plantasCollapse">
+            Estatísticas de Plantas
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#gastosCollapse" aria-expanded="false" aria-controls="gastosCollapse">
+            Estatísticas de Gastos
+        </button>
+    </div>
+
+    <div class="container collapse" id="plantasCollapse" data-bs-parent="accordionExample">
+      <h1>Estatísticas de Plantas</h1>
+      <div class="statistics-section">
+          <div class="stat-card">
+              <h3>Total de Árvores em Estoque</h3>
+              <p><%= totalArvores %></p>
+          </div>
+          <div class="stat-card">
+            <h3>Árvores por Espécie</h3>
+            <% arvoresPorEspecie.forEach(item => { %>
+                <p><%= item._id %>: <%= item.total %></p>
+            <% }); %>
+        </div>
+        <div class="stat-card">
+            <h3>Árvores por Área</h3>
+            <% arvoresPorArea.forEach(item => { %>
+                <p><%= item._id %>: <%= item.total %></p>
+            <% }); %>
+        </div>
+      </div>
+      <br>
+      <div class="statistics-section">
+          <div class="stat-card">
+            <div id="chart_div8" style="width: 100%; height: 400px;"></div>
+          </div>
+          <div class="stat-card">
+            <div id="chart_div9" style="width: 100%; height: 400px;"></div>
+          </div>
+      </div>
+  </div>
+
+    <div class="container collapse" id="clientesCollapse" data-bs-parent="accordionExample">
+        <h1>Estatísticas de Clientes</h1>
+        <div class="statistics-section">
+            <div id="chart_div1" style="width: 100%; height: 400px;"></div>
+            <div id="chart_div2" style="width: 100%; height: 400px;"></div>
+            <div id="chart_div3" style="width: 100%; height: 400px;"></div>
+        </div>
+    </div>
+
+    <div class="container collapse" id="gastosCollapse" data-bs-parent="accordionExample">
+        <h1>Estatísticas de Gastos</h1>
+        <div class="statistics-section">
+            <div id="chart_div4" style="width: 100%; height: 500px;"></div>
+            <div id="chart_div5" style="width: 100%; height: 500px;"></div>
+            <div id="chart_div6" style="width: 100%; height: 500px;"></div>
+            <div id="chart_div7" style="width: 100%; height: 500px;"></div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

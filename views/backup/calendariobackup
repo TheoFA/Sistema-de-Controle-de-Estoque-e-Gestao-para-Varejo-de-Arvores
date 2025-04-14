@@ -1,0 +1,108 @@
+//calendario de saldo diario e mensal
+
+app.get('/lucros-calendario', async (req, res) => {
+    try {
+        const vendas = await Venda.find();
+        const gastos = await Gasto.find();
+
+        const mapaDiario = {};
+
+        // Função auxiliar para formatar datas
+        const formatDate = (date) => {
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = ('0' + (d.getMonth() + 1)).slice(-2); // Mês de 1 a 12
+            const day = ('0' + d.getDate()).slice(-2); // Dia com zero à esquerda
+            return `${year}-${month}-${day}`;
+        };
+
+        // Processar vendas
+        vendas.forEach(venda => {
+            const data = formatDate(venda.data);
+            if (!mapaDiario[data]) {
+                mapaDiario[data] = { totalVendas: 0, totalGastos: 0 };
+            }
+            mapaDiario[data].totalVendas += venda.itens.reduce((total, item) => total + item.valor, 0);
+        });
+
+        // Processar gastos
+        gastos.forEach(gasto => {
+            const data = formatDate(gasto.data);
+            if (!mapaDiario[data]) {
+                mapaDiario[data] = { totalVendas: 0, totalGastos: 0 };
+            }
+            mapaDiario[data].totalGastos += gasto.valor;
+        });
+
+        // Transformar dados em eventos para o calendário
+        // Transformar dados em eventos para o calendário
+const eventos = Object.entries(mapaDiario).map(([data, valores]) => {
+    const saldo = valores.totalVendas - valores.totalGastos;
+    const cor = saldo >= 0 ? 'blue' : 'red'; // Define a cor com base no saldo
+    return {
+        title: `<div style=" background-color: ${cor}; padding: 0; margin: 0;">
+                Vendas: R$${valores.totalVendas.toFixed(2)}<br>
+                Gastos: R$${valores.totalGastos.toFixed(2)}<br>
+                Saldo: R$${saldo.toFixed(2)}
+            </div>`,
+        start: data,
+        end: data,
+        allDay: true
+    };
+});
+
+
+        res.render('lucros-calendario', { eventos: JSON.stringify(eventos) });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao buscar dados do calendário.');
+    }
+});
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário de Lucros</title>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calendário de Lucros</h1>
+    <div id='calendar'></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var eventos = <%- eventos %>; // Passa os eventos para o JS
+
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: eventos, // Adiciona os eventos ao calendário
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                eventDidMount: function(info) {
+                    info.el.innerHTML = info.event.title; // Renderiza o HTML do evento
+                },
+                eventClick: function(info) {
+                    alert(info.event.title); // Exibe um alerta com o título do evento
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+</body>
+</html>
+

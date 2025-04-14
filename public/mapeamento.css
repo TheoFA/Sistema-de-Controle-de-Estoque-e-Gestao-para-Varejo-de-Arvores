@@ -1,0 +1,75 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: #3fb243c2;
+}
+.container{
+
+    margin: 0; /* Remove margem */
+    padding: 0; /* Remove preenchimento */
+}
+#mapa {
+    position: relative;
+    width: 100vw; /* Ocupa 100% da largura da viewport */
+    height: 90vh; /* Ajuste a altura conforme necessário */
+    overflow: auto; /* Adiciona barra de rolagem se necessário */
+    background-color: #eaeaea;
+    margin: 0; /* Remove margem */
+    padding: 0; /* Remove preenchimento */
+    box-sizing: border-box; /* Inclui bordas e preenchimentos no cálculo da largura e altura */
+}
+
+#imagem {
+    display: block; /* Remove espaços ao redor da imagem */
+    width: 100%; /* Ajusta a largura da imagem para 100% do contêiner */
+    height: auto; /* Ajusta a altura automaticamente para manter a proporção da imagem */
+}
+
+.marcador {
+    position: absolute;
+    width: 20px; /* Aumenta o tamanho do contêiner do marcador */
+    height: 20px;
+    background-color: transparent; /* Remove a cor de fundo */
+    color: red; /* Define a cor do símbolo */
+    font-size: 20px; /* Ajusta o tamanho da fonte */
+    line-height: 20px; /* Centraliza verticalmente o símbolo */
+    text-align: center; /* Centraliza horizontalmente o símbolo */
+    cursor: pointer;
+    transform: translate(-50%, -50%); /* Centraliza o marcador no ponto clicado */
+}
+
+.marcador::before {
+    content: '*'; /* Substitua o '*' por qualquer outro símbolo que desejar */
+}
+
+.controls {
+    position: absolute;
+    z-index: 100;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#filtro-especie, #btn-salvar {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#btn-salvar {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+}

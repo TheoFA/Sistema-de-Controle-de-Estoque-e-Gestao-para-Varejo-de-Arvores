@@ -1,0 +1,47 @@
+ <!--  BARRA DE NAVEGAÇÃO -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="imagens/palmicon.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                Palmeira Bonita
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/adicionar-arvores">Adicionar Árvores</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cadastrar</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/cadastrar-especie">Cadastrar Espécie</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/cadastrar-area">Cadastrar Área</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Visualizar e Remover do Estoque</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/visualizar-plantas-por-especie">Por Espécie</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/visualizar-plantas-por-area">Por Área</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/visualizar-itens">Itens</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mapeamento">Mapeamento</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/obras">Obras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/registro-gastos">Financeiro</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--  FIM DA BARRA DE NAVEGAÇÃO -->

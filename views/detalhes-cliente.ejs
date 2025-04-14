@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/styles.css">
+    <title>Detalhes do Cliente</title>
+</head>
+<body>
+   <!--  BARRA DE NAVEGAÇÃO -->
+   <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img src="/imagens/palmicon.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+        Palmeira Bonita
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <!-- Navbar items -->
+          <!-- ... -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+<!--  FIM DA BARRA DE NAVEGAÇÃO -->
+    <h1>Detalhes do Cliente</h1>
+    <p><strong>Nome:</strong> <%= cliente.nome %></p>
+    <p><strong>Cidade:</strong> <%= cliente.cidade %></p>
+    <p><strong>Tipo de Obra:</strong> <%= cliente.tipoObra %></p>
+    <p><strong>Indicação:</strong> <%= cliente.indicacao %></p>
+    <p><strong>Contato:</strong> <%= cliente.contato %></p>
+   
+    
+    <!-- Formulário para upload de múltiplos orçamentos -->
+    <form action="/clientes/<%= cliente._id %>/upload-orcamentos" method="POST" enctype="multipart/form-data">
+        <input type="file" name="orcamentos" accept=".pdf" multiple>
+        <button type="submit">Enviar Documentos</button>
+    </form>
+
+    <!-- Lista de orçamentos -->
+    <h2>Documentos Relacionados</h2>
+    <ul>
+        <% if (cliente.orcamento && cliente.orcamento.length > 0) { %>
+            <% cliente.orcamento.forEach(orcamento => { %>
+                <li><a href="/uploads/<%= orcamento %>">Visualizar documento <%= orcamento %></a></li>
+            <% }); %>
+        <% } else { %>
+            <li>Nenhum documento enviado.</li>
+        <% } %>
+    </ul>
+    <br>
+    <a href="/clientes">Voltar para Lista de Clientes</a>
+</body>
+</html>

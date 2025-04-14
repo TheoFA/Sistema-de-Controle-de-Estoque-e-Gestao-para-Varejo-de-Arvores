@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/estatisticas-plantas.css">
+    <title>Estatísticas de Plantas</title>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            drawEspeciesChart();
+            drawAreasChart();
+        }
+
+        function drawEspeciesChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Espécie', 'Quantidade'],
+                <% Object.keys(arvoresPorEspecie).forEach(especie => { %>
+                    ['<%= especie %>', <%= arvoresPorEspecie[especie] %>],
+                <% }); %>
+            ]);
+
+            var options = {
+                title: 'Árvores por Espécie'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('especies-chart'));
+            chart.draw(data, options);
+        }
+
+        function drawAreasChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Área', 'Quantidade'],
+                <% Object.keys(arvoresPorArea).forEach(area => { %>
+                    ['<%= area %>', <%= arvoresPorArea[area] %>],
+                <% }); %>
+            ]);
+
+            var options = {
+                title: 'Árvores por Área'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('areas-chart'));
+            chart.draw(data, options);
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const collapsibles = document.querySelectorAll('.collapse');
+            collapsibles.forEach(collapse => {
+                collapse.addEventListener('show.bs.collapse', function() {
+                    collapsibles.forEach(otherCollapse => {
+                        if (otherCollapse !== collapse) {
+                            const bsCollapse = bootstrap.Collapse.getInstance(otherCollapse);
+                            if (bsCollapse) {
+                                bsCollapse.hide();
+                            }
+                        }
+                    });
+                });
+            });
+        });
+
+
+    </script>
+</head>
+<body>
+    <!--  BARRA DE NAVEGAÇÃO -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="imagens/palmicon.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                Palmeira Bonita
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+             <ul></ul>
+            </div>
+        </div>
+    </nav>
+    <!--  FIM DA BARRA DE NAVEGAÇÃO -->
+
+
+
+    <div class="container">
+        <h1>Estatísticas de Plantas</h1>
+        <div class="statistics-section">
+            <div class="stat-card">
+                <h3>Total de Árvores Plantadas</h3>
+                <p><%= totalArvores %></p>
+            </div>
+            <div class="stat-card">
+                <h3>Árvores por Espécie</h3>
+                <% Object.keys(arvoresPorEspecie).forEach(especie => { %>
+                    <p><%= especie %>: <%= arvoresPorEspecie[especie] %></p>
+                <% }); %>
+             
+            </div>
+            <div class="stat-card">
+                <h3>Árvores por Área</h3>
+                <% Object.keys(arvoresPorArea).forEach(area => { %>
+                    <p><%= area %>: <%= arvoresPorArea[area] %></p>
+                <% }); %>
+                
+            </div>
+        </div>
+        <br>
+        <div class="statistics-section">
+            <div class="stat-card">
+                <div id="especies-chart" style="width: 400px; height: 300px;"></div>
+            </div>
+            <div class="stat-card">
+                <div id="areas-chart" style="width: 400px; height: 300px;"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

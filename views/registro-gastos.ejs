@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Gastos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/registrodegastos.css">
+</head>
+<body>
+   <!--  BARRA DE NAVEGAÇÃO -->
+   <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img src="imagens/palmicon.png"  alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+
+        Palmeira Bonita
+    </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/adicionar-arvores">Adicionar Arvores</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Cadastrar
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/cadastrar-especie">Cadastrar Especie</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/cadastrar-area">Cadastrar Área</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Visualizar e Remover do Estoque
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="visualizar-plantas-por-especie">Por Especie</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="visualizar-plantas-por-area">Por Área</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="visualizar-itens">itens</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/mapeamento">Mapeamento</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/obras">Obras</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/registro-gastos">Financeiro</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<!--  FIM DA BARRA DE NAVEGAÇÃO -->
+<page>
+    <form action="/registrar-gasto" method="POST">
+      <h1> Registro de Gastos </h1>
+        <div>
+            <label for="tipoGasto">Tipo de Gasto:</label>
+            <select id="tipoGasto" name="tipoGasto" onchange="toggleObraDropdown()">
+                <option value="gastos-gerais">Gastos Gerais</option>
+                <option value="obra-cliente">Obra Cliente</option>
+            </select>
+        </div>
+
+        <div id="obraDropdown">
+            <label for="obraCliente">Obra:</label>
+            <select id="obraCliente" name="obra">
+                <% obras.forEach(function(obra) { %>
+                    <option value="<%= obra._id %>"><%= obra.nome %></option>
+                <% }); %>
+            </select>            
+        </div>
+
+        <div>
+            <label for="categoria">Categoria:</label>
+            <select id="categoria" name="categoria" onchange="toggleProdutoInput()" required>
+              <option value="" disabled selected>Selecione uma categoria</option>
+                <option value="compra-de-planta">Compra de planta</option>
+                <option value="frete">Frete</option>
+                <option value="compra-de-produto">Compra de Produto</option>
+                <option value="pagamento-funcionario">Pagamento funcionário</option>
+                <option value="alimentacao">Alimentação</option>
+                <option value="conducao">Condução</option>
+                <option value="ferramentas">Ferramentas</option>
+                <option value="pagamento-de-terceiros">Pagamento de terceiros</option>
+                <option value="outros">Outros</option>
+            </select>
+        </div>
+
+    
+<div id="produtoContainer">
+  <label for="produto">Produto:</label>
+  <input type="text" id="produto" name="produto" required>
+</div>
+
+<div id="quantidadeContainer" style="display: none;">
+  <label for="quantidade">Quantidade:</label>
+  <input type="number" id="quantidade" name="quantidade" min="1">
+</div>
+
+        <div>
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required>
+        </div>
+
+        <div>
+            <label for="valor">Valor Total:</label>
+            <input type="number" id="valor" name="valor" required>
+        </div>
+
+        <button type="submit">Registrar Gasto</button>
+    </form>
+
+    <script>
+    function toggleObraDropdown() {
+        var tipoGasto = document.getElementById('tipoGasto').value;
+        var obraDropdown = document.getElementById('obraDropdown');
+        if (tipoGasto === 'obra-cliente') {
+            obraDropdown.style.display = 'block';
+        } else {
+            obraDropdown.style.display = 'none';
+        }
+    }
+
+    function toggleProdutoInput() {
+    var categoria = document.getElementById('categoria').value;
+    var produtoContainer = document.getElementById('produtoContainer');
+    var quantidadeContainer = document.getElementById('quantidadeContainer');
+    
+    if (categoria === 'compra-de-planta') {
+        // Transformar o campo de produto em dropdown
+        produtoContainer.innerHTML = `
+            <label for="produto">Produto:</label>
+            <select id="produto" name="produto" required>
+                <option value="" disabled selected>Selecione uma espécie</option>
+                <% especies.forEach(function(especie) { %>
+                    <option value="<%= especie.nome %>"><%= especie.nome %></option>
+                <% }); %>
+            </select>
+        `;
+        // Exibir campo de quantidade
+        quantidadeContainer.style.display = 'block';
+    } else {
+        // Voltar para input text se não for "compra-de-planta"
+        produtoContainer.innerHTML = `
+            <label for="produto">Produto:</label>
+            <input type="text" id="produto" name="produto" required>
+        `;
+        // Ocultar campo de quantidade
+        quantidadeContainer.style.display = 'none';
+    }
+}
+    </script>
+</page>
+</body>
+</html>
